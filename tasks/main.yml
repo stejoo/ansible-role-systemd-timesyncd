@@ -1,0 +1,7 @@
+---
+- name: copy timesyncd default conf
+  template: src=timesyncd.conf.j2 dest=/etc/systemd/timesyncd.conf
+  notify: restart timesyncd
+
+- name: synchronize time
+  command: timedatectl set-ntp true
