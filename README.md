@@ -28,7 +28,7 @@ Example Playbook
 
     - hosts: servers
       roles:
-         - { role: loranger.debian-timesyncd, timesyncd.servers: 0.debian.pool.ntp.org }
+         - { role: cowops.debian-timesyncd, timesyncd.servers: 0.debian.pool.ntp.org }
 
 Tasks
 -----
