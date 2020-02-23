@@ -8,4 +8,8 @@
 # See timesyncd.conf(5) for details
 
 [Time]
+{% if systemd_version is version('216', '<') %}
 Servers={{ timesyncd.servers | join(' ') }}
+{% else %}
+NTP={{ timesyncd.servers | join(' ') }}
+{% endif %}
