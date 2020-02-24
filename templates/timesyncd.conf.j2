@@ -20,3 +20,9 @@ NTP={{ timesyncd_ntp_servers | join(' ') }}
 FallbackNTP={{ timesyncd_fallback_servers | join(' ') }}
 {% endif %}
 {% endif %}
+{% if systemd_version is version('236', '>=') %}
+{# systemd v236 or higher #}
+RootDistanceMaxSec={{ timesyncd_root_distance_max_sec|int(5) }}
+PollIntervalMinSec={{ [timesyncd_poll_interval_min_sec|int(32), 16] | max }}
+PollIntervalMaxSec={{ [timesyncd_poll_interval_max_sec|int(2048), (timesyncd_poll_interval_min_sec|int(32))+1] | max }}
+{% endif %}
