@@ -14,7 +14,7 @@
     verbosity: 1
     msg: "{{ systemd_version }}"
 
-- name: Ensure systemd-timesyncd configuration
+- name: Ensure systemd-timesyncd configuration file
   template:
     src: timesyncd.conf.j2
     dest: /etc/systemd/timesyncd.conf
@@ -23,5 +23,8 @@
     mode: 0644
   notify: restart timesyncd
 
-- name: Enable time synchronization
-  command: timedatectl set-ntp true
+- name: Configure systemd-timesyncd service state
+  service:
+    name: systemd-timesyncd
+    state: started
+    enabled: yes
