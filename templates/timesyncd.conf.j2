@@ -9,7 +9,14 @@
 
 [Time]
 {% if systemd_version is version('216', '<') %}
-Servers={{ timesyncd.servers | join(' ') }}
+{# systemd v215 or lower #}
+Servers={{ timesyncd_ntp_servers | join(' ') }}
 {% else %}
-NTP={{ timesyncd.servers | join(' ') }}
+{# systemd v216 or higher #}
+{% if timesyncd_ntp_servers is defined and timesyncd_ntp_servers|length > 0 %}
+NTP={{ timesyncd_ntp_servers | join(' ') }}
+{% endif %}
+{% if timesyncd_fallback_servers is defined and timesyncd_fallback_servers|length > 0 %}
+FallbackNTP={{ timesyncd_fallback_servers | join(' ') }}
+{% endif %}
 {% endif %}

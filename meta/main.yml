@@ -1,7 +1,7 @@
 ---
 galaxy_info:
-  author: loranger
-  description: Enable timesyncd for debian system
+  author: stejoo
+  description: Configure systemd-timesyncd on a Linux system
   license: BSD
   min_ansible_version: 2.5
   platforms:

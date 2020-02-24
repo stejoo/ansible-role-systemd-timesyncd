@@ -1,42 +1,62 @@
-Debian-timesyncd
-================
+Ansible role systemd-timesyncd
+==============================
 
-Network Time Synchronization
+Ansible role to configure systemd-timesyncd on a Linux system.
 
 Requirements
 ------------
 
-This role requires systemd running on a debian compliant system such as ubuntu.
+- a Linux system using systemd as init
+- recommended: no other Network Time Protocol software running
 
 Role Variables
 --------------
 
-timesyncd:
-    servers:
-        - 0.debian.pool.ntp.org
-        - 1.debian.pool.ntp.org
-        - 2.debian.pool.ntp.org
-        - 3.debian.pool.ntp.org
+The following variables can be set to your preference:
+
+| variable                          | default value                                                              | description                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+|-----------------------------------|----------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `timesyncd_fallback_servers`      | `['0.pool.ntp.org', '1.pool.ntp.org', '2.pool.ntp.org', '3.pool.ntp.org']` | List of NTP server host names or IP addresses to be used as the fallback NTP servers. NTP servers obtained from `systemd-networkd.service` take precedence over this setting, as do any servers set by the `timesyncd_ntp_servers` variable. This way `systemd-timesyncd` will try a NTP server provided by the local network (over DHCP for example), or one configured in `timesyncd_ntp_servers`, before falling back to this list of NTP servers or a hard-coded one. |
+| `timesyncd_ntp_servers`           | `[]`                                                                       | List of NTP server host names or IP addresses. `systemd-timesyncd` appends this list with any NTP servers acquired from `systemd-networkd.service` and tries them all.                                                                                                                                                                                                                                                                                                    |
+
+Be aware of version dependent behavior:
+- `fallback_servers` is available from systemd v216 and up
+
+Table generated with: <https://www.tablesgenerator.com/markdown_tables>
+
 
 Dependencies
 ------------
 
-None
+None, this role has no dependency on another role.
 
 Example Playbook
 ----------------
 
-    - hosts: servers
+    - hosts: all
+      vars:
+        timesyncd:
+          ntp_servers:
+            - 0.europe.pool.ntp.org
+            - 1.europe.pool.ntp.org
+            - 2.europe.pool.ntp.org
+            - 3.europe.pool.ntp.org
       roles:
-         - { role: cowops.debian-timesyncd, timesyncd.servers: 0.debian.pool.ntp.org }
+         - stejoo.systemd-timesyncd
 
 Tasks
 -----
 
-  - Install [ntp](http://www.ntp.org/)
-  - Setup with [french ntp pool](http://www.pool.ntp.org/fr/)
+  - Configure `systemd-timesyncd`
+  - Enable and start the `systemd-timesyncd.service`
 
 License
 -------
 
 BSD
+
+Author(s)
+---------
+
+- Laurent Goussard (author of [debian-timesyncd](<https://github.com/cowops/debian-timesyncd>))
+- Stefan Joosten
