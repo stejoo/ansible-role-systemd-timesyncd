@@ -13,10 +13,10 @@
 Servers={{ timesyncd_ntp_servers | join(' ') }}
 {% else %}
 {# systemd v216 or higher #}
-{% if timesyncd_ntp_servers is defined and timesyncd_ntp_servers|length > 0 %}
+{% if timesyncd_ntp_servers|length > 0 %}
 NTP={{ timesyncd_ntp_servers | join(' ') }}
 {% endif %}
-{% if timesyncd_fallback_servers is defined and timesyncd_fallback_servers|length > 0 %}
+{% if timesyncd_fallback_servers|length > 0 %}
 FallbackNTP={{ timesyncd_fallback_servers | join(' ') }}
 {% endif %}
 {% endif %}
